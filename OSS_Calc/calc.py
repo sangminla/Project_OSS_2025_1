@@ -63,6 +63,11 @@ class Calculator:
             sound_speed = 340.0  # m/s
             time = distance / sound_speed
             self.expression = f"{time:.2f}초"
+
+            # ✅ 결과를 GUI에 출력
+            self.entry.delete(0, tk.END)
+            self.entry.insert(tk.END, self.expression)
+
         except Exception as e:
             messagebox.showerror("오류", f"입력 오류: {e}")
             self.expression = ""
