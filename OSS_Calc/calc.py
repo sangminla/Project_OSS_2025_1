@@ -13,13 +13,13 @@ class Calculator:
         self.entry = tk.Entry(root, font=("Arial", 24), justify="right")
         self.entry.pack(fill="both", ipadx=8, ipady=15, padx=10, pady=10)
 
-        # 버튼 정의
+        # 버튼 생성
         buttons = [
             ['7', '8', '9', '/'],
             ['4', '5', '6', '*'],
             ['1', '2', '3', '-'],
             ['0', '.', 'C', '+'],
-            ['=', '음속']
+            ['=', '구속 계산']
         ]
 
         for row in buttons:
@@ -42,8 +42,8 @@ class Calculator:
                 self.expression = str(eval(self.expression))
             except Exception:
                 self.expression = "에러"
-        elif char == '음속':
-            self.calculate_sound_travel_time()
+        elif char == '구속 계산':
+            self.calculate_pitch_speed_time()
             return
         else:
             self.expression += str(char)
@@ -51,23 +51,24 @@ class Calculator:
         self.entry.delete(0, tk.END)
         self.entry.insert(tk.END, self.expression)
 
-    def calculate_sound_travel_time(self):
+    def calculate_pitch_speed_time(self):
         try:
-            # 거리 입력 (단위는 m)
-            distance = simpledialog.askfloat("소리 도달 시간 계산", "거리를 입력하세요 (미터 단위):")
-            if distance is None:
-                return  # 사용자가 취소
-            if distance < 0:
-                raise ValueError("음수는 안 됩니다.")
+            # 속도 입력 (단위: km/h)
+            speed_kmh = simpledialog.askfloat("구속 입력", "공의 속도를 입력하세요 (km/h):")
+            if speed_kmh is None:
+                return
+            if speed_kmh <= 0:
+                raise ValueError("속도는 0보다 커야 합니다.")
 
-            sound_speed = 340.0  # m/s
-            time = distance / sound_speed
+            distance = 18.44  # 투수-포수 거리 (미터)
+            speed_mps = speed_kmh * 1000 / 3600  # km/h → m/s
+            time = distance / speed_mps  # 도달 시간 (초)
+
             self.expression = f"{time:.2f}초"
-
-            # ✅ 결과를 GUI에 출력
-            self.entry.delete(0, tk.END)
-            self.entry.insert(tk.END, self.expression)
 
         except Exception as e:
             messagebox.showerror("오류", f"입력 오류: {e}")
             self.expression = ""
+cd
+        self.entry.delete(0, tk.END)
+        self.entry.insert(tk.END, self.expression)
